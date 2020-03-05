@@ -1,21 +1,28 @@
-// On va instancier une variable avec un objet XHR
-let xhr = new XMLHttpRequest();
+let form = document.getElementById('search');
+form.addEventListener( 'submit', search );
 
-// On défini le paramètre
-let address = encodeURIComponent( '9 rue de cambrai' );
+function search( e ){
+    e.preventDefault();
 
-// On défini l'URL de la requête
-let url = 'https://api-adresse.data.gouv.fr/search/?q=' + address;
+    let xhr = new XMLHttpRequest();
 
-// On prépare la requête
-xhr.open( 'GET', url );
+    let value = form.querySelector('input[name="query"]').value;
+    let address = encodeURIComponent( value );
+    let url = 'https://api-adresse.data.gouv.fr/search/?q=' + address + '&limit=10';
+    xhr.open( 'GET', url );
 
-// Gestion de la réponse
-xhr.onload = function(){
-    // Récupération du contenu de la réponse
-    let response = JSON.parse( xhr.response );
+    xhr.onload = function(){
+        let response = JSON.parse( xhr.response );
+        proccess( response );
+    };
 
+    xhr.send();
+}
+
+function proccess( response ){
     let list = document.getElementById( 'result' );
+    list.innerHTML = '';
+
     for( let i in response.features ){
         let address = response.features[ i ];
 
@@ -25,6 +32,3 @@ xhr.onload = function(){
         list.appendChild( li );
     }
 }
-
-// On envoi la requête
-xhr.send();
