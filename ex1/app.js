@@ -1,12 +1,19 @@
 let form = document.getElementById('search');
-form.addEventListener( 'submit', search );
+let input = form.querySelector('input[name="query"]');
+var timer;
+input.addEventListener( 'keyup', function(){
+    clearTimeout( timer );
+    timer = setTimeout( search, 500 );
+});
 
-function search( e ){
-    e.preventDefault();
-
+function search(){
     let xhr = new XMLHttpRequest();
 
-    let value = form.querySelector('input[name="query"]').value;
+    let value = input.value;
+    if( value.length < 3 ){
+        return;
+    }
+
     let address = encodeURIComponent( value );
     let url = 'https://api-adresse.data.gouv.fr/search/?q=' + address + '&limit=10';
     xhr.open( 'GET', url );
