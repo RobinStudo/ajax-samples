@@ -14,8 +14,16 @@ xhr.open( 'GET', url );
 xhr.onload = function(){
     // Récupération du contenu de la réponse
     let response = JSON.parse( xhr.response );
-    
-    console.log( response.features );
+
+    let list = document.getElementById( 'result' );
+    for( let i in response.features ){
+        let address = response.features[ i ];
+
+        let li = document.createElement('li');
+        li.innerText = address.properties.label;
+
+        list.appendChild( li );
+    }
 }
 
 // On envoi la requête
