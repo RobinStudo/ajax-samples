@@ -1,11 +1,3 @@
-<?php
-$pdo = new PDO('mysql:host=localhost;dbname=mailer', 'root', '');
-
-$sql = 'SELECT * FROM mail ORDER BY id DESC LIMIT 1';
-$stmt = $pdo->prepare( $sql );
-$stmt->execute();
-$mail = $stmt->fetch();
-?>
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -20,9 +12,10 @@ $mail = $stmt->fetch();
     </head>
     <body>
         <form class="mailer">
-            <input type="email" name="email" placeholder="Destinataire" value="<?php echo $mail['email']; ?>">
-            <input type="text" name="subject" placeholder="Sujet" value="<?php echo $mail['subject']; ?>">
-            <textarea name="message" rows="8" placeholder="Message"><?php echo $mail['message']; ?></textarea>
+            <input type="email" name="email" placeholder="Destinataire">
+            <input type="text" name="subject" placeholder="Sujet">
+            <textarea name="message" rows="8" placeholder="Message"></textarea>
+            <input type="hidden" name="draft_identifier">
             <input type="submit" value="Envoyer">
         </form>
 
